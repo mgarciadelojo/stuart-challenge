@@ -19,7 +19,7 @@ The Stuart API will need to keep in sync the list of Couriers in the platform as
 ```bash
 curl -X POST http://localhost:3000/couriers --data '
 {
-  "id": 1234,
+  "courier_id": 1234,
   "max_capacity": 45
 }'
 ```
