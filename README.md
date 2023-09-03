@@ -1,35 +1,44 @@
 # Stuart Challenge
+This document provides essential information and instructions for setting up and working with the Stuart API project. Below, you'll find details on project setup, running the API locally, testing, and more.
 
-The original [README.md](docs/original-README.md) document can be found in the `docs` folder.
+## Project Structure
+The original [README.md](docs/original-README.md) document can be found in the `docs` folder for reference.
 
 ## Setup
 ### Run API Locally
+To run the API locally, follow these steps:
+
 ```
 docker-compose up postgresql -d
 npm install
 npm run api:dev
 ```
 
-Output:
+You should see the following output indicating that the server is running on `http://localhost:3000`:
 ```
 Server running on http://localhost:3000
 ```
 
-*Note: node >= 18.x (LTS)*
+*Note: The project requires Node.js version 18.x (LTS).*
 
 ### Run Tests
+To run tests for the API, use the following command:
+
 ```
 npm run test
 ```
 
 ### Replicate Production Locally
+To replicate the production environment locally, run the following command:
+
 ```
 docker-compose up
 ```
 
 ## Endpoint's Contracts
+The API provides the following endpoints with their corresponding contracts:
 
-1. Keep sync of couriers:
+1. **Keep Sync of Couriers** (POST)
 ```
 curl --location 'localhost:3000/couriers' \
 --header 'Content-Type: application/json' \
@@ -39,7 +48,7 @@ curl --location 'localhost:3000/couriers' \
 }'
 ```
 
-2. Courier available capacity lookup:
+2. **Courier Available Capacity Lookup** (GET)
 ```
 curl --location --request GET 'localhost:3000/couriers/lookup?capacity_required=100' \
 --header 'Content-Type: application/json'
@@ -57,11 +66,10 @@ Every major decision I have taken is recorded as a Architecture Decision Record 
 - [006-race-conditions.md](docs/adr/007-race-conditions.md)
 
 ## Assumptions when designing the API
-
-In order for this exercise to be fully understood by whomever is reading this document, I will start by listing the assumptions I made when designing the API.
+To provide clarity on the API's design decisions, the following assumptions were made:
 
 ### Main Goal
-The two objectives defined in the `Main Goal` section of the original README.md document made me lean towards the idea that the endpoint...
+The main goals mentioned in the project's original README.md document guided the API's design. Specifically, the endpoint:
 
 ```
 curl -X POST http://localhost:3000/couriers --data '
@@ -71,28 +79,30 @@ curl -X POST http://localhost:3000/couriers --data '
 }'
 ```
 
-is for creating a new courier, updating an existing one or removing their capacity (by setting it to 0). Because the contracts where already defined (and not to be changed) and the two following sentences:
+was interpreted as a means to create a new courier, update an existing one, or remove their capacity (by setting it to 0). This interpretation aligns with the defined contracts and the following statements from the original document:
 
-> The Stuart API will need to **keep in sync** the list of Couriers ...
-
-> Write the API that will allow **adding, removing and updating couriers' capacities**
+- `The Stuart API will need to keep in sync the list of Couriers ...`
+- `Write the API that will allow adding, removing and updating couriers' capacities`
 
 
 ### Bonus Goals
+The first bonus goal, which states:
 
-The first of the bonus goals says:
+- `Allow the API to update a courier's available capacity at any moment as they are assigned new packages.`
 
-> Allow the API to update a courier's available capacity at any moment as they are assigned new packages.
-
-The requirements were not very clear on this one. Since the first assumption of the `Main Goals` section allows updating the capacity of a Courier at any moment, I thought this was covered until the requirements could be clarified by a Stakeholder.
+was addressed under the assumption that the main goal already allowed updating courier capacities at any time. Further clarification from stakeholders may be needed to refine this feature.
 
 ## If I had more time
+Given more time, several improvements and enhancements would be considered, including:
 
-If I had more time, I would have done the following:
-- Add more tests, as I added the bare minimum unit tests to show my knowledge. Although unit tests are important, recently I became more interested in integration tests. See [this testing trophy article](https://medium.com/@mateuszroth/why-the-test-pyramid-is-a-bullshit-guide-to-testing-towards-modern-frontend-and-backend-apps-4246e89b87bd)
-- Observability: logging to start with, then metrics. APM would be nice too.
-- Add a CI/CD pipeline to automate the deployment of the API
+
+- Expanding test coverage, only a bare minimum of unit tests were provided to show my skills and knowledge. Although unit tests are important, recently I became more interested in integration tests. See [this testing trophy article](https://medium.com/@mateuszroth/why-the-test-pyramid-is-a-bullshit-guide-to-testing-towards-modern-frontend-and-backend-apps-4246e89b87bd)
+  Implementing observability through logging, metrics, and potentially Application Performance Monitoring (APM).
+- Establishing a CI/CD pipeline for automated deployment.
 - Implement the output schema described in the `ADR` documents
-- Better error handling, with domain errors and a smarter error handler middleware that can process errors and transform them into their HTTP status counterparts
-- Database migrations instead of using TypeORM's `synchronize` option
-- Lock dependencies' version numbers on `package.json`
+- Enhancing error handling, including domain-specific errors and a more robust error handler middleware.
+- Database migrations instead of using TypeORM's `synchronize` option 
+- Locking dependencies' version numbers in the package.json for stability.
+- Implementing a more robust and scalable database schema, adding indexes, timestamps and not letting the client define the ID for couriers.
+
+These improvements would contribute to a more robust and maintainable API.
