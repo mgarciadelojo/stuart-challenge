@@ -1,0 +1,13 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "json"
+  ],
+  "testRegex": "/src/.*\\.(test|spec).(ts|tsx|js)$",
+  "collectCoverageFrom" : ["src/**/*.{js,jsx,tsx,ts}", "!**/node_modules/**", "!**/vendor/**"],
+  "coverageReporters": ["json", "lcov"]
+}
