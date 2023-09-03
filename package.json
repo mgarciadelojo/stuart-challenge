@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "npx tsc",
-    "api:prod": "node ./dist/src/app.js",
+    "api:prod": "node ./dist/app.js",
     "api:dev": "ts-node-dev ./src/app.ts",
     "test": "jest --verbose",
     "test:watch": "jest --verbose --watchAll",

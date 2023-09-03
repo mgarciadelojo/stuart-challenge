@@ -5,8 +5,8 @@ import bodyParser from 'body-parser'
 
 import { initServer } from './presentation/server'
 import { initRoutes } from './presentation/routes'
-import { dataSource } from './infrastructure/persistence/orm'
 import { errorHandlerMiddleware } from './presentation/middlewares'
+import { dataSource } from './infrastructure/persistence/orm'
 
 const app = express()
 const port = parseInt(process.env.SERVER_PORT ?? '3000', 10)

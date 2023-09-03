@@ -5,10 +5,11 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://username:password@postgresql:5432/stuart-challenge
     ports:
       - "3000:3000"
-    command: npm run api:dev
+    command: npm run api:prod
     depends_on:
       postgresql:
         condition: service_healthy
